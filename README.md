@@ -3,7 +3,7 @@
 > 
 >   DeliveryEmployee: id, name, vehicleType [BIKE, MOTORCYCLE, CAR, TRUCK], UF
 
-- [ ] MySQL docker-compose
+- [X] MySQL docker-compose
 - [ ] Doc Swagger
 - [ ] Layered: DTO, Model, Repository, Service e Controller (IMPL e Interface)
 - [ ] CRUD

@@ -1,30 +1,35 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.impl;
 
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.DeliveryEmployeeController;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.DelivererController;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.DeliveryEmployee;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.DeliveryEmployeeService;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.DelivererService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.impl.DelivererControllerImpl.URL_DELIVERER;
+
 @RestController
-@RequestMapping("/deliveryEmployee")
+@RequestMapping(URL_DELIVERER)
 @RequiredArgsConstructor
-public class DeliveryEmployeeControllerImpl implements DeliveryEmployeeController {
-    private final DeliveryEmployeeService deliveryEmployeeService;
+public class DelivererControllerImpl implements DelivererController {
+
+    public static final String URL_DELIVERER = "/deliverer";
+
+    private final DelivererService delivererService;
 
     @PostMapping
     @Override
-    public ResponseEntity<DeliveryEmployee> createEmployee(@RequestBody DeliveryEmployee deliveryEmployee) {
-        return new ResponseEntity<>(deliveryEmployeeService.createEmployee(deliveryEmployee), HttpStatus.CREATED);
+    public ResponseEntity<Deliverer> createEmployee(@RequestBody Deliverer deliverer) {
+        return new ResponseEntity<>(delivererService.createEmployee(deliverer), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findEmployee(@PathVariable Long id) {
         try {
-            DeliveryEmployee employee = deliveryEmployeeService.findEmployee(id);
+            Deliverer employee = delivererService.findEmployee(id);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("ID inválido");
@@ -34,9 +39,9 @@ public class DeliveryEmployeeControllerImpl implements DeliveryEmployeeControlle
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> alterEmployee(@PathVariable Long id, @RequestBody DeliveryEmployee deliveryEmployee) {
+    public ResponseEntity<?> alterEmployee(@PathVariable Long id, @RequestBody Deliverer deliverer) {
         try {
-            DeliveryEmployee employee = deliveryEmployeeService.alterEmployee(id, deliveryEmployee);
+            Deliverer employee = delivererService.alterEmployee(id, deliverer);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("ID inválido");
@@ -48,7 +53,7 @@ public class DeliveryEmployeeControllerImpl implements DeliveryEmployeeControlle
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
         try {
-            deliveryEmployeeService.deleteEmployee(id);
+            delivererService.deleteEmployee(id);
             return new ResponseEntity<>("Employee erased", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("ID inválido");

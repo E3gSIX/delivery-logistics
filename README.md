@@ -1,7 +1,7 @@
 # Delivery Logistics
 > Entities
 > 
->   DeliveryEmployee: id, name, vehicleType [BIKE, MOTORCYCLE, CAR, TRUCK], UF
+>   Deliverer: id, name, vehicleType [BIKE, MOTORCYCLE, CAR, TRUCK], UF
 
 - [X] MySQL docker-compose
 - [X] Doc Swagger

@@ -10,12 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "deliveryEmployees")
+@Entity(name = "deliverer")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class DeliveryEmployee {
+public class Deliverer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

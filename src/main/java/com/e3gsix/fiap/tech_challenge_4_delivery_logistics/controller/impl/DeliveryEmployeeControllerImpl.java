@@ -39,7 +39,7 @@ public interface DeliveryEmployeeControllerImpl {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryEmployee.class))
                     })
     })
-    ResponseEntity<DeliveryEmployee> findEmployee(@Parameter(description = "Id do empregado a ser consultado.") Long orderId);
+    ResponseEntity<?> findEmployee(@Parameter(description = "Id do empregado a ser consultado.") Long orderId);
 
     @Operation(summary = "Atualiza um empregado pelo ID.")
     @ApiResponses(value = {
@@ -50,9 +50,9 @@ public interface DeliveryEmployeeControllerImpl {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryEmployee.class))
                     })
     })
-    ResponseEntity<DeliveryEmployee> alterEmployee(
+    ResponseEntity<?> alterEmployee(
             @Parameter(description = "Id do empregado a ser consultado.") Long orderId,
-            @Parameter(hidden = true) UriComponentsBuilder uriComponentsBuilder);
+            @Parameter(hidden = true) DeliveryEmployee deliveryEmployee);
 
     @Operation(summary = "Deleta um empregado pelo ID.")
     @ApiResponses(value = {
@@ -63,6 +63,6 @@ public interface DeliveryEmployeeControllerImpl {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryEmployee.class))
                     })
     })
-    ResponseEntity<DeliveryEmployee> alterEmployee(@Parameter(description = "Id do empregado a ser consultado.") Long orderId);
+    ResponseEntity<?> deleteEmployee(@Parameter(description = "Id do empregado a ser apagado.") Long orderId);
 
 }

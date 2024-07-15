@@ -27,8 +27,8 @@ public class DeliveryEmployeeServiceImpl implements DeliveryEmployeeService {
     @Override
     public DeliveryEmployee alterEmployee(Long id, DeliveryEmployee alterEmployee) {
         DeliveryEmployee employee = findEmployee(id);
-        if (!employee.getId().equals(alterEmployee.getId())) {
-            throw new NotFoundException("mensagem não apresenta o ID correto");
+        if (!employee.getId().equals(id)) {
+            throw new NotFoundException("Empregado não apresenta o ID correto");
         }
         employee.setName(alterEmployee.getName());
         employee.setUf(alterEmployee.getUf());

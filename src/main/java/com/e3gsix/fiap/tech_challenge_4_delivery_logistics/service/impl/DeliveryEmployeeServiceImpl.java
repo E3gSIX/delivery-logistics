@@ -20,14 +20,13 @@ public class DeliveryEmployeeServiceImpl implements DeliveryEmployeeService {
 
     @Override
     public DeliveryEmployee findEmployee(Long id) {
-        validateExistence(id);
-        return deliveryEmployeeRepository.findById(id).orElseThrow(() -> createNotFoundOrderException(id));
+       return deliveryEmployeeRepository.findById(id).orElseThrow(() -> createNotFoundOrderException(id));
     }
 
     @Override
     public DeliveryEmployee alterEmployee(Long id, DeliveryEmployee alterEmployee) {
         DeliveryEmployee employee = findEmployee(id);
-        if (!employee.getId().equals(id)) {
+        if (!alterEmployee.getId().equals(id)) {
             throw new NotFoundException("Empregado não apresenta o ID correto");
         }
         employee.setName(alterEmployee.getName());
@@ -37,17 +36,11 @@ public class DeliveryEmployeeServiceImpl implements DeliveryEmployeeService {
     }
 
     @Override
-    public boolean deleteEmployee(Long id) {
-        DeliveryEmployee employee = findEmployee(id);
-        deliveryEmployeeRepository.delete(employee);
-        return true;
+    public void deleteEmployee(Long id) {
+        deliveryEmployeeRepository.deleteById(id);
     }
 
-    private void validateExistence(Long id) {
-        if (!this.deliveryEmployeeRepository.existsById(id)) throw createNotFoundOrderException(id);
-    }
-
-    private NotFoundException createNotFoundOrderException(Long id){
+     private NotFoundException createNotFoundOrderException(Long id){
         return new NotFoundException("Employee with ID: " + id + " not found.");
     }
 }

@@ -1,68 +1,59 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.impl;
 
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.DeliveryEmployeeController;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.DeliveryEmployee;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.DeliveryEmployeeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.bind.annotation.*;
 
-@Tag(
-        name = "Delivery Employee [DeliveryEmployeeController]",
-        description = "Controlador que fornece os serviços de criação,consulta,alteracao e exclusao de empregados."
-)
-public interface DeliveryEmployeeControllerImpl {
+@RestController
+@RequestMapping("/deliveryEmployee")
+@RequiredArgsConstructor
+public class DeliveryEmployeeControllerImpl implements DeliveryEmployeeController {
+    private final DeliveryEmployeeService deliveryEmployeeService;
 
-    @Operation(summary = "Criar um empregado.")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Empregado criado com sucesso.",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryEmployee.class))
-                    })
-    })
-    ResponseEntity<DeliveryEmployee> createEmployee(
-            @Parameter(hidden = true) DeliveryEmployee deliveryEmployee
-    );
+    @PostMapping
+    @Override
+    public ResponseEntity<DeliveryEmployee> createEmployee(@RequestBody DeliveryEmployee deliveryEmployee) {
+        return new ResponseEntity<>(deliveryEmployeeService.createEmployee(deliveryEmployee), HttpStatus.CREATED);
+    }
 
-    @Operation(summary = "Buscar um empregado pelo ID.")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Empregado encontrado com sucesso.",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryEmployee.class))
-                    })
-    })
-    ResponseEntity<?> findEmployee(@Parameter(description = "Id do empregado a ser consultado.") Long orderId);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> findEmployee(@PathVariable Long id) {
+        try {
+            DeliveryEmployee employee = deliveryEmployeeService.findEmployee(id);
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("ID inválido");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
-    @Operation(summary = "Atualiza um empregado pelo ID.")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Empregado atualizado com sucesso.",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryEmployee.class))
-                    })
-    })
-    ResponseEntity<?> alterEmployee(
-            @Parameter(description = "Id do empregado a ser consultado.") Long orderId,
-            @Parameter(hidden = true) DeliveryEmployee deliveryEmployee);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> alterEmployee(@PathVariable Long id, @RequestBody DeliveryEmployee deliveryEmployee) {
+        try {
+            DeliveryEmployee employee = deliveryEmployeeService.alterEmployee(id, deliveryEmployee);
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("ID inválido");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
-    @Operation(summary = "Deleta um empregado pelo ID.")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Empregado apagado com sucesso.",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryEmployee.class))
-                    })
-    })
-    ResponseEntity<?> deleteEmployee(@Parameter(description = "Id do empregado a ser apagado.") Long orderId);
-
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
+        try {
+            deliveryEmployeeService.deleteEmployee(id);
+            return new ResponseEntity<>("Employee erased", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("ID inválido");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

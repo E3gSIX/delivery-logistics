@@ -72,7 +72,7 @@ public class DelivererServiceTest {
             when(delivererRepository.findById(anyLong())).thenReturn(Optional.empty());
             assertThatThrownBy(() -> delivererService.findEmployee(deliverer.getId()))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessage("Employee with ID: " + deliverer.getId() + " not found.");
+                    .hasMessage("Entregador com ID: " + deliverer.getId() + " não encontrado.");
             verify(delivererRepository, times(1)).findById(deliverer.getId());
         }
 
@@ -105,7 +105,7 @@ public class DelivererServiceTest {
             when(delivererRepository.save(any(Deliverer.class))).thenReturn(deliverer);
             assertThatThrownBy(() -> delivererService.alterEmployee(deliverer.getId(),deliverer2))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessage("Empregado não apresenta o ID correto");
+                    .hasMessage("Entregador não apresenta o ID correto");
             verify(delivererRepository, times(1)).findById(deliverer.getId());
         }
     }

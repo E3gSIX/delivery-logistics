@@ -77,7 +77,7 @@ public class DelivererRepositoryTest {
     }
 
     private Deliverer deliverer() {
-        return new Deliverer(1L, "Randon", VehicleType.CAR, UF.SAO_PAULO);
+        return new Deliverer(1L, "Randon", VehicleType.CAR, UF.SP);
     }
 
 }

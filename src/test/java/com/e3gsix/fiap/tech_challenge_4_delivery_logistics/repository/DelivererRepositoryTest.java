@@ -1,7 +1,7 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository;
 
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.Uf;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.UF;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.VehicleType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,7 +77,7 @@ public class DelivererRepositoryTest {
     }
 
     private Deliverer deliverer() {
-        return new Deliverer(1L, "Randon", VehicleType.CAR, Uf.SAO_PAULO);
+        return new Deliverer(1L, "Randon", VehicleType.CAR, UF.SAO_PAULO);
     }
 
 }

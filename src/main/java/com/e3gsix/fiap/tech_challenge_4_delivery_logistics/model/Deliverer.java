@@ -1,6 +1,6 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model;
 
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.Uf;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.UF;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.VehicleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,5 +31,5 @@ public class Deliverer {
 
     @Enumerated(EnumType.STRING)
     @NotEmpty(message = "uf não pode estar vazio")
-    private Uf uf;
+    private UF uf;
 }

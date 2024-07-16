@@ -4,7 +4,7 @@ import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundEx
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository.DelivererRepository;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.impl.DelivererServiceImpl;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.Uf;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.UF;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.VehicleType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -98,8 +98,8 @@ public class DelivererServiceTest {
 
         @Test
         void update_employeeWrongId_successful() {
-            var deliverer = new Deliverer(1L, "Randon", VehicleType.CAR, Uf.SAO_PAULO);
-            var deliverer2 = new Deliverer(2L, "Randon", VehicleType.CAR, Uf.SAO_PAULO);
+            var deliverer = new Deliverer(1L, "Randon", VehicleType.CAR, UF.SP);
+            var deliverer2 = new Deliverer(2L, "Randon", VehicleType.CAR, UF.SP);
 
             when(delivererRepository.findById(anyLong())).thenReturn(Optional.of(deliverer));
             when(delivererRepository.save(any(Deliverer.class))).thenReturn(deliverer);
@@ -119,6 +119,6 @@ public class DelivererServiceTest {
     }
 
     private Deliverer deliverer() {
-        return new Deliverer(1L, "Randon", VehicleType.CAR, Uf.SAO_PAULO);
+        return new Deliverer(1L, "Randon", VehicleType.CAR, UF.SP);
     }
 }

@@ -1,8 +1,8 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository;
 
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.UF;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.VehicleType;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.UF;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.VehicleType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

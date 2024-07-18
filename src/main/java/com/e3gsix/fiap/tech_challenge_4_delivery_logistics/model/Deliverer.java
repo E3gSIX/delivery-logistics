@@ -1,7 +1,7 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model;
 
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.UF;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums.VehicleType;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.UF;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.VehicleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

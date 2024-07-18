@@ -1,4 +1,4 @@
-package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.util.enums;
+package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums;
 
 import lombok.AllArgsConstructor;
 

@@ -41,9 +41,9 @@ public class DelivererControllerImpl implements DelivererController {
     }
 
     @GetMapping(URL_DELIVERER_ID)
-    public ResponseEntity<?> findEmployee(@PathVariable Long delivererId) {
+    public ResponseEntity<?> findById(@PathVariable Long delivererId) {
         try {
-            Deliverer employee = delivererService.findEmployee(delivererId);
+            Deliverer employee = delivererService.findById(delivererId);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("ID inválido");

@@ -41,7 +41,7 @@ public interface DelivererController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Deliverer.class))
                     })
     })
-    ResponseEntity<?> findEmployee(@Parameter(description = "Id do entregador a ser consultado.") Long orderId);
+    ResponseEntity<?> findById(@Parameter(description = "Id do entregador a ser consultado.") Long orderId);
 
     @Operation(summary = "Atualizar um entregador pelo ID.")
     @ApiResponses(value = {

@@ -21,13 +21,13 @@ public class DelivererServiceImpl implements DelivererService {
     }
 
     @Override
-    public Deliverer findEmployee(Long id) {
+    public Deliverer findById(Long id) {
        return delivererRepository.findById(id).orElseThrow(() -> createNotFoundOrderException(id));
     }
 
     @Override
     public Deliverer alterEmployee(Long id, Deliverer alterEmployee) {
-        Deliverer employee = findEmployee(id);
+        Deliverer employee = findById(id);
         if (!alterEmployee.getId().equals(id)) {
             throw new NotFoundException("Entregador não apresenta o ID correto");
         }

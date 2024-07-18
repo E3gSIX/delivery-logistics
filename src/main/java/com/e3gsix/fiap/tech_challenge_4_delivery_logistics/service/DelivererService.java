@@ -7,7 +7,7 @@ public interface DelivererService {
 
     Long create(DelivererCreationRequestDTO deliverer);
 
-    Deliverer findEmployee(Long id);
+    Deliverer findById(Long id);
 
     Deliverer alterEmployee(Long id, Deliverer deliverer);
 

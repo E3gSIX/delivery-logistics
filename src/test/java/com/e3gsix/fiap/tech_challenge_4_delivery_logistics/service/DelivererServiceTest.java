@@ -72,10 +72,10 @@ public class DelivererServiceTest {
 
 
         @Test
-        void find_employee_successful() {
+        void findById_ExistingDeliverer_FindWithSuccess() {
             var deliverer = deliverer();
             when(delivererRepository.findById(anyLong())).thenReturn(Optional.of(deliverer));
-            var employeeFound = delivererService.findEmployee(deliverer.getId());
+            var employeeFound = delivererService.findById(deliverer.getId());
             verify(delivererRepository, times(1)).findById(deliverer.getId());
             assertThat(employeeFound).isEqualTo(deliverer);
         }
@@ -84,7 +84,7 @@ public class DelivererServiceTest {
         void find_employeeWithOtherId_successful() {
             var deliverer = deliverer();
             when(delivererRepository.findById(anyLong())).thenReturn(Optional.empty());
-            assertThatThrownBy(() -> delivererService.findEmployee(deliverer.getId()))
+            assertThatThrownBy(() -> delivererService.findById(deliverer.getId()))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessage("Entregador com ID: " + deliverer.getId() + " não encontrado.");
             verify(delivererRepository, times(1)).findById(deliverer.getId());
@@ -101,7 +101,7 @@ public class DelivererServiceTest {
             var deliverer = deliverer();
             when(delivererRepository.findById(anyLong())).thenReturn(Optional.of(deliverer));
             when(delivererRepository.save(any(Deliverer.class))).thenReturn(deliverer);
-            var employeeFound = delivererService.findEmployee(deliverer.getId());
+            var employeeFound = delivererService.findById(deliverer.getId());
             employeeFound.setName("Silva");
             var employeeUpdated = delivererService.alterEmployee(deliverer.getId(), employeeFound);
             verify(delivererRepository, times(1)).save(any(Deliverer.class));

@@ -1,5 +1,6 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller;
 
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Tag(
         name = "Entregador [DelivererController]",
@@ -25,8 +27,9 @@ public interface DelivererController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Deliverer.class))
                     })
     })
-    ResponseEntity<Deliverer> createEmployee(
-            @Parameter(description = "Atributos do entregador a ser criado.") Deliverer deliverer
+    ResponseEntity create(
+            @Parameter(description = "Atributos do entregador a ser criado.") DelivererCreationRequestDTO delivererDTO,
+            @Parameter(hidden = true) UriComponentsBuilder uriComponentsBuilder
     );
 
     @Operation(summary = "Buscar um entregador pelo ID.")

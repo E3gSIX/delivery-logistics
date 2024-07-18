@@ -1,10 +1,11 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service;
 
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 
 public interface DelivererService {
 
-    Deliverer createEmployee(Deliverer deliverer);
+    Long create(DelivererCreationRequestDTO deliverer);
 
     Deliverer findEmployee(Long id);
 

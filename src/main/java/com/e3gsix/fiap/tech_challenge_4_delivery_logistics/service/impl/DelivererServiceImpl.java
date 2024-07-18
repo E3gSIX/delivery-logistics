@@ -1,5 +1,6 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.impl;
 
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository.DelivererRepository;
@@ -14,8 +15,9 @@ public class DelivererServiceImpl implements DelivererService {
     private final DelivererRepository delivererRepository;
 
     @Override
-    public Deliverer createEmployee(Deliverer deliverer) {
-        return delivererRepository.save(deliverer);
+    public Long create(DelivererCreationRequestDTO delivererDTO) {
+        Deliverer createdDeliverer = this.delivererRepository.save(delivererDTO.toModel());
+        return createdDeliverer.getId();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.impl;
 
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.DelivererController;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.DelivererService;
@@ -8,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 import static com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.impl.DelivererControllerImpl.URL_DELIVERER;
 
@@ -17,19 +21,29 @@ import static com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.imp
 public class DelivererControllerImpl implements DelivererController {
 
     public static final String URL_DELIVERER = "/deliverer";
+    public static final String URL_DELIVERER_ID = "/{delivererId}";
 
     private final DelivererService delivererService;
 
     @PostMapping
     @Override
-    public ResponseEntity<Deliverer> createEmployee(@RequestBody Deliverer deliverer) {
-        return new ResponseEntity<>(delivererService.createEmployee(deliverer), HttpStatus.CREATED);
+    public ResponseEntity create(
+            @RequestBody DelivererCreationRequestDTO delivererDTO,
+            UriComponentsBuilder uriComponentsBuilder
+    ) {
+        Long idCreatedDeliverer = this.delivererService.create(delivererDTO);
+
+        URI uri = uriComponentsBuilder.path(URL_DELIVERER + URL_DELIVERER_ID)
+                .buildAndExpand(idCreatedDeliverer)
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<?> findEmployee(@PathVariable Long id) {
+    @GetMapping(URL_DELIVERER_ID)
+    public ResponseEntity<?> findEmployee(@PathVariable Long delivererId) {
         try {
-            Deliverer employee = delivererService.findEmployee(id);
+            Deliverer employee = delivererService.findEmployee(delivererId);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("ID inválido");
@@ -38,10 +52,10 @@ public class DelivererControllerImpl implements DelivererController {
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> alterEmployee(@PathVariable Long id, @RequestBody Deliverer deliverer) {
+    @PutMapping(URL_DELIVERER_ID)
+    public ResponseEntity<?> alterEmployee(@PathVariable Long delivererId, @RequestBody Deliverer deliverer) {
         try {
-            Deliverer employee = delivererService.alterEmployee(id, deliverer);
+            Deliverer employee = delivererService.alterEmployee(delivererId, deliverer);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("ID inválido");
@@ -50,10 +64,10 @@ public class DelivererControllerImpl implements DelivererController {
         }
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
+    @DeleteMapping(URL_DELIVERER_ID)
+    public ResponseEntity<?> deleteEmployee(@PathVariable Long delivererId) {
         try {
-            delivererService.deleteEmployee(id);
+            delivererService.deleteEmployee(delivererId);
             return new ResponseEntity<>("Employee erased", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("ID inválido");

@@ -1,5 +1,6 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service;
 
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository.DelivererRepository;
@@ -42,14 +43,27 @@ public class DelivererServiceTest {
     @Nested
     class CreateEmployee {
         @Test
-        void create_newEmployee_successful() {
-            var deliverer = deliverer();
-            when(delivererRepository.save(any(Deliverer.class))).thenReturn(deliverer);
-            var employee = delivererService.createEmployee(deliverer);
-            verify(delivererRepository, times(1)).save(deliverer);
-            assertThat(employee).isInstanceOf(Deliverer.class)
+        void create_newDeliverer_successful() {
+            Long expectedId = 1L;
+
+            DelivererCreationRequestDTO delivererDTO = new DelivererCreationRequestDTO(
+                    "John Doe",
+                    VehicleType.TRUCK,
+                    UF.AC
+            );
+
+            Deliverer expectedDeliverer = delivererDTO.toModel();
+            expectedDeliverer.setId(expectedId);
+
+            when(delivererRepository.save(any(Deliverer.class))).thenReturn(expectedDeliverer);
+
+            Long idCreatedDeliverer = delivererService.create(delivererDTO);
+
+            verify(delivererRepository, times(1)).save(any(Deliverer.class));
+
+            assertThat(idCreatedDeliverer)
                     .isNotNull()
-                    .isEqualTo(deliverer);
+                    .isEqualTo(expectedId);
         }
     }
 

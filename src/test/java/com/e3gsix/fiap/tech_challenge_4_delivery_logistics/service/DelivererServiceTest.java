@@ -1,12 +1,13 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service;
 
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.exception.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererDTO;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.UF;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.VehicleType;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository.DelivererRepository;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.impl.DelivererServiceImpl;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.UF;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.enums.VehicleType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -74,10 +75,17 @@ public class DelivererServiceTest {
         @Test
         void findById_ExistingDeliverer_FindWithSuccess() {
             var deliverer = deliverer();
-            when(delivererRepository.findById(anyLong())).thenReturn(Optional.of(deliverer));
-            var employeeFound = delivererService.findById(deliverer.getId());
+            when(delivererRepository.findById(deliverer.getId())).thenReturn(Optional.of(deliverer));
+
+            DelivererDTO delivererFound = delivererService.findById(deliverer.getId());
+
             verify(delivererRepository, times(1)).findById(deliverer.getId());
-            assertThat(employeeFound).isEqualTo(deliverer);
+
+            assertThat(delivererFound).satisfies(found -> {
+                assertThat(found.name()).isEqualTo(deliverer.getName());
+                assertThat(found.vehicleType()).isEqualTo(deliverer.getVehicleType());
+                assertThat(found.uf()).isEqualTo(deliverer.getUf());
+            });
         }
 
         @Test
@@ -86,7 +94,7 @@ public class DelivererServiceTest {
             when(delivererRepository.findById(anyLong())).thenReturn(Optional.empty());
             assertThatThrownBy(() -> delivererService.findById(deliverer.getId()))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessage("Entregador com ID: " + deliverer.getId() + " não encontrado.");
+                    .hasMessage("Entregador com ID '" + deliverer.getId() + "' não encontrado.");
             verify(delivererRepository, times(1)).findById(deliverer.getId());
         }
 
@@ -97,17 +105,23 @@ public class DelivererServiceTest {
     class UpdateEmployee {
 
         @Test
-        void update_Employee_successful() {
-            var deliverer = deliverer();
-            when(delivererRepository.findById(anyLong())).thenReturn(Optional.of(deliverer));
-            when(delivererRepository.save(any(Deliverer.class))).thenReturn(deliverer);
-            var employeeFound = delivererService.findById(deliverer.getId());
-            employeeFound.setName("Silva");
-            var employeeUpdated = delivererService.alterEmployee(deliverer.getId(), employeeFound);
+        void update_ExistingDeliverer_UpdateWithSuccess() {
+            Deliverer deliverer = deliverer();
+            Deliverer delivererToUpdate = new Deliverer(deliverer.getId(), "John", VehicleType.TRUCK, UF.AL);
+
+            when(delivererRepository.findById(deliverer.getId())).thenReturn(Optional.of(deliverer));
+            when(delivererRepository.save(any(Deliverer.class))).thenReturn(delivererToUpdate);
+
+            var deliveredUpdated = delivererService.update(deliverer.getId(), delivererToUpdate);
+
             verify(delivererRepository, times(1)).save(any(Deliverer.class));
-            assertThat(employeeUpdated).isInstanceOf(Deliverer.class)
-                    .isNotNull()
-                    .extracting(Deliverer::getName).isEqualTo("Silva");
+
+            assertThat(deliveredUpdated).isInstanceOf(DelivererDTO.class)
+                    .isNotNull().satisfies(updated -> {
+                        assertThat(updated.name()).isEqualTo(delivererToUpdate.getName());
+                        assertThat(updated.vehicleType()).isEqualTo(delivererToUpdate.getVehicleType());
+                        assertThat(updated.uf()).isEqualTo(delivererToUpdate.getUf());
+                    });
         }
 
         @Test
@@ -117,7 +131,7 @@ public class DelivererServiceTest {
 
             when(delivererRepository.findById(anyLong())).thenReturn(Optional.of(deliverer));
             when(delivererRepository.save(any(Deliverer.class))).thenReturn(deliverer);
-            assertThatThrownBy(() -> delivererService.alterEmployee(deliverer.getId(),deliverer2))
+            assertThatThrownBy(() -> delivererService.update(deliverer.getId(), deliverer2))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessage("Entregador não apresenta o ID correto");
             verify(delivererRepository, times(1)).findById(deliverer.getId());
@@ -128,7 +142,7 @@ public class DelivererServiceTest {
     void delete_Employee_successful() {
         var deliverer = deliverer();
         doNothing().when(delivererRepository).deleteById(deliverer.getId());
-        delivererService.deleteEmployee(deliverer.getId());
+        delivererService.delete(deliverer.getId());
         verify(delivererRepository, times(1)).deleteById(deliverer.getId());
     }
 

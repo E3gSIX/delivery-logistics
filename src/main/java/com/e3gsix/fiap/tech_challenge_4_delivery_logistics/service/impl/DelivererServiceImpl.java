@@ -1,6 +1,7 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.impl;
 
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository.DelivererRepository;
@@ -21,25 +22,34 @@ public class DelivererServiceImpl implements DelivererService {
     }
 
     @Override
-    public Deliverer findById(Long id) {
-       return delivererRepository.findById(id).orElseThrow(() -> createNotFoundOrderException(id));
+    public DelivererDTO findById(Long id) {
+        Deliverer findedDeliverer = delivererRepository.findById(id)
+                .orElseThrow(() -> createNotFoundOrderException(id));
+
+        return DelivererDTO.fromModel(findedDeliverer);
     }
 
     @Override
-    public Deliverer alterEmployee(Long id, Deliverer alterEmployee) {
-        Deliverer employee = findById(id);
+    public DelivererDTO update(Long id, Deliverer alterEmployee) {
+        Deliverer delivererToUpdate = delivererRepository.findById(id)
+                .orElseThrow(() -> createNotFoundOrderException(id));
+
         if (!alterEmployee.getId().equals(id)) {
             throw new NotFoundException("Entregador não apresenta o ID correto");
         }
-        employee.setName(alterEmployee.getName());
-        employee.setUf(alterEmployee.getUf());
-        employee.setVehicleType(alterEmployee.getVehicleType());
-        return delivererRepository.save(employee);
+
+        delivererToUpdate.setName(alterEmployee.getName());
+        delivererToUpdate.setUf(alterEmployee.getUf());
+        delivererToUpdate.setVehicleType(alterEmployee.getVehicleType());
+
+        Deliverer updatedDeliverer = this.delivererRepository.save(delivererToUpdate);
+
+        return DelivererDTO.fromModel(updatedDeliverer);
     }
 
     @Override
-    public void deleteEmployee(Long id) {
-        delivererRepository.deleteById(id);
+    public void delete(Long id) {
+        this.delivererRepository.deleteById(id);
     }
 
      private NotFoundException createNotFoundOrderException(Long id){

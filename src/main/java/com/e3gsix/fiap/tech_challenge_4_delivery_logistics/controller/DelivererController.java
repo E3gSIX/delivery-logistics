@@ -1,6 +1,7 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller;
 
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,7 +42,7 @@ public interface DelivererController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Deliverer.class))
                     })
     })
-    ResponseEntity<?> findById(@Parameter(description = "Id do entregador a ser consultado.") Long orderId);
+    ResponseEntity<DelivererDTO> findById(@Parameter(description = "Id do entregador a ser consultado.") Long orderId);
 
     @Operation(summary = "Atualizar um entregador pelo ID.")
     @ApiResponses(value = {
@@ -52,7 +53,7 @@ public interface DelivererController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Deliverer.class))
                     })
     })
-    ResponseEntity<?> alterEmployee(
+    ResponseEntity<?> update(
             @Parameter(description = "Id do entregador a ser consultado.") Long orderId,
             @Parameter(description = "Atributos a serem alterados do entregador.") Deliverer deliverer);
 
@@ -65,6 +66,6 @@ public interface DelivererController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Deliverer.class))
                     })
     })
-    ResponseEntity<?> deleteEmployee(@Parameter(description = "Id do entregador a ser deletado.") Long orderId);
+    ResponseEntity delete(@Parameter(description = "Id do entregador a ser deletado.") Long orderId);
 
 }

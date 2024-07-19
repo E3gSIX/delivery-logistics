@@ -2,6 +2,7 @@ package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.impl;
 
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.DelivererController;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.DelivererService;
@@ -41,38 +42,20 @@ public class DelivererControllerImpl implements DelivererController {
     }
 
     @GetMapping(URL_DELIVERER_ID)
-    public ResponseEntity<?> findById(@PathVariable Long delivererId) {
-        try {
-            Deliverer employee = delivererService.findById(delivererId);
-            return new ResponseEntity<>(employee, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("ID inválido");
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<DelivererDTO> findById(@PathVariable Long delivererId) {
+        DelivererDTO deliverer = this.delivererService.findById(delivererId);
+        return ResponseEntity.ok(deliverer);
     }
 
     @PutMapping(URL_DELIVERER_ID)
-    public ResponseEntity<?> alterEmployee(@PathVariable Long delivererId, @RequestBody Deliverer deliverer) {
-        try {
-            Deliverer employee = delivererService.alterEmployee(delivererId, deliverer);
-            return new ResponseEntity<>(employee, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("ID inválido");
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<?> update(@PathVariable Long delivererId, @RequestBody Deliverer deliverer) {
+        DelivererDTO updatedDeliverer = this.delivererService.update(delivererId, deliverer);
+        return ResponseEntity.ok(updatedDeliverer);
     }
 
     @DeleteMapping(URL_DELIVERER_ID)
-    public ResponseEntity<?> deleteEmployee(@PathVariable Long delivererId) {
-        try {
-            delivererService.deleteEmployee(delivererId);
-            return new ResponseEntity<>("Employee erased", HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("ID inválido");
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity delete(@PathVariable Long delivererId) {
+        this.delivererService.delete(delivererId);
+        return ResponseEntity.noContent().build();
     }
 }

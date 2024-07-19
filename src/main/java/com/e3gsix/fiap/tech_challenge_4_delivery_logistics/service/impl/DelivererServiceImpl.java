@@ -1,8 +1,8 @@
 package com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.impl;
 
+import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.controller.exception.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererCreationRequestDTO;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.dto.DelivererDTO;
-import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.exceptions.NotFoundException;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.model.Deliverer;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.repository.DelivererRepository;
 import com.e3gsix.fiap.tech_challenge_4_delivery_logistics.service.DelivererService;
@@ -53,6 +53,6 @@ public class DelivererServiceImpl implements DelivererService {
     }
 
      private NotFoundException createNotFoundOrderException(Long id){
-        return new NotFoundException("Entregador com ID: " + id + " não encontrado.");
+        return new NotFoundException("Entregador com ID '" + id + "' não encontrado.");
     }
 }

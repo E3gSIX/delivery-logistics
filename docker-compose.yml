@@ -17,6 +17,8 @@ services:
       DB_URL: '${DB_URL}'
     ports:
       - "8083:8083"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - mysql
     restart: always
